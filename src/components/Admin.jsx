@@ -1,6 +1,10 @@
 
 import { useState } from "react";
 
+const API_URL =
+  "https://teffect-backend.onrender.com/api/requests";
+
+
 function Admin() {
 
   const [loggedIn, setLoggedIn] = useState(false);
@@ -10,22 +14,12 @@ function Admin() {
 
   const [requests, setRequests] = useState([]);
 
-  const handleLogin = async (event) => {
 
-    event.preventDefault();
-
-    if (username !== "temitope" || password !== "temitope1") {
-      alert("Incorrect username or password.");
-      return;
-    }
-
-    setLoggedIn(true);
+  const loadRequests = async () => {
 
     try {
 
-      const response = await fetch(
-        "http://127.0.0.1:5000/api/requests"
-      );
+      const response = await fetch(API_URL);
 
       const data = await response.json();
 
@@ -35,9 +29,38 @@ function Admin() {
 
       console.error(error);
 
-      alert("Could not load customer requests.");
+      alert(
+        "Could not load customer requests."
+      );
 
     }
+
+  };
+
+
+  const handleLogin = async (event) => {
+
+    event.preventDefault();
+
+
+    if (
+      username !== "temitope" ||
+      password !== "temitope1"
+    ) {
+
+      alert(
+        "Incorrect username or password."
+      );
+
+      return;
+
+    }
+
+
+    setLoggedIn(true);
+
+    await loadRequests();
+
   };
 
 
@@ -59,6 +82,7 @@ function Admin() {
   if (!loggedIn) {
 
     return (
+
       <div className="admin-login">
 
         <div className="login-box">
@@ -74,6 +98,7 @@ function Admin() {
           <p>
             Login to manage customer footwear requests.
           </p>
+
 
           <form onSubmit={handleLogin}>
 
@@ -132,7 +157,9 @@ function Admin() {
         </div>
 
       </div>
+
     );
+
   }
 
 
@@ -141,6 +168,7 @@ function Admin() {
   // =========================
 
   return (
+
     <div className="admin-page">
 
       <div className="admin-header">
@@ -166,17 +194,7 @@ function Admin() {
 
           <button
             className="refresh-btn"
-            onClick={async () => {
-
-              const response = await fetch(
-                "http://127.0.0.1:5000/api/requests"
-              );
-
-              const data = await response.json();
-
-              setRequests(data);
-
-            }}
+            onClick={loadRequests}
           >
             Refresh
           </button>
@@ -246,6 +264,7 @@ function Admin() {
 
                 </div>
 
+
                 <span className="request-status">
                   {item.status}
                 </span>
@@ -285,7 +304,9 @@ function Admin() {
       )}
 
     </div>
+
   );
+
 }
 
 export default Admin;

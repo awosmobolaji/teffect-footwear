@@ -1,8 +1,6 @@
 
 import { useState } from "react";
 
-
-
 function ContactSection() {
 
   const [formData, setFormData] = useState({
@@ -27,10 +25,12 @@ function ContactSection() {
 
     event.preventDefault();
 
+    setSubmitted(false);
+
     try {
 
       const response = await fetch(
-        "http://127.0.0.1:5000/api/requests",
+        "https://teffect-backend.onrender.com/api/requests",
         {
           method: "POST",
 
@@ -58,7 +58,9 @@ function ContactSection() {
 
       } else {
 
-        alert(data.error);
+        alert(
+          data.error || "Unable to send request."
+        );
 
       }
 
@@ -67,7 +69,7 @@ function ContactSection() {
       console.error(error);
 
       alert(
-        "Unable to send request. Please make sure the TEFFECT backend is running."
+        "Unable to send request. Please try again."
       );
 
     }
@@ -101,12 +103,12 @@ function ContactSection() {
 
           <div>
             <span>Email</span>
-            <p>awosmobolaji555@gmail.com</p>
+            <p>hello@teffect.com</p>
           </div>
 
           <div>
             <span>Phone</span>
-            <p>+234 810 933 7983</p>
+            <p>+234 800 000 0000</p>
           </div>
 
           <div>
